@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 
 @Entity
 public class User {
+
+    //mutlu
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
