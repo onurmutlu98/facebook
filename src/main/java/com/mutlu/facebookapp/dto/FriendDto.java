@@ -10,7 +10,11 @@ public class FriendDto {
     public FriendDto() {
 
     }
-    public FriendDto(String name, List<User> friends) {}
+
+    public FriendDto(String name, List<UserDto> friends) {
+        this.name = name;
+        this.friends = friends;
+    }
 
     public String getName() {
         return name;
