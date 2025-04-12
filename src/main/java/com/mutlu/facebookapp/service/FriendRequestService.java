@@ -6,6 +6,8 @@ import com.mutlu.facebookapp.repository.FriendRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FriendRequestService {
 
@@ -35,5 +37,12 @@ public class FriendRequestService {
             return "You have been accepted the friend request";
         }
         return "You have been rejected the friend request";
+    }
+
+    public List<FriendRequest> getFriendRequests(){
+        return repository.findAll();
+    }
+    public FriendRequest getFriendRequest(int friendRequest_id) {
+        return repository.findById(friendRequest_id).get();
     }
 }

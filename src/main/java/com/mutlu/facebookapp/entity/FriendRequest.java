@@ -8,7 +8,7 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int status;
+    private Integer status;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -26,11 +26,11 @@ public class FriendRequest {
         this.id = id;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
