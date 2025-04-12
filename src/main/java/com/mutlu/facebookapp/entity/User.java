@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+
 @Entity
 public class User {
     @Id
@@ -16,6 +17,17 @@ public class User {
     private String firstName;
     private String lastName;
 
+    public User(int id, String username, String password, String firstName, String lastName) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User() {
+
+    }
 
     public int getId() {
         return id;
