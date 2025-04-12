@@ -22,19 +22,21 @@ public class UserService {
     public User saveUser(User user) {
         return repository.save(user);
     }
+
     public List<User> getUsers() {
         return repository.findAll();
     }
     public User getUserById(int id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
+
     public String deleteUserById(int id) {
         repository.deleteById(id);
         return "User deleted";
     }
 
     public FriendDto getFriends(Integer userId) {
-        User user = repository.findById(userId).get();
+        User user = repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         List<UserDto> userDtos = new ArrayList<>();
 
         FriendDto friendDto=new FriendDto();
@@ -52,8 +54,9 @@ public class UserService {
                    userDtos.add(user2);
                }
            }
-           friendDto.setFriends(userDtos);
+
         }
+        friendDto.setFriends(userDtos);
         return friendDto;
     }
 }

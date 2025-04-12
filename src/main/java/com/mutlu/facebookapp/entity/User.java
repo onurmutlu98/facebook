@@ -90,4 +90,5 @@ public class User {
     public void setRecipient(List<FriendRequest> recipient) {
         this.recipient = recipient;
     }
+
 }
