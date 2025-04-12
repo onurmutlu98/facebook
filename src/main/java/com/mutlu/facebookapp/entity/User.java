@@ -1,15 +1,12 @@
 package com.mutlu.facebookapp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
+import java.util.List;
 
 @Entity
 public class User {
-
-    //mutlu
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -19,16 +16,23 @@ public class User {
     private String firstName;
     private String lastName;
 
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<FriendRequest> sender;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<FriendRequest> recipient;
+
+    public User() {
+    }
+
     public User(int id, String username, String password, String firstName, String lastName) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User() {
-
     }
 
     public int getId() {
@@ -69,5 +73,21 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<FriendRequest> getSender() {
+        return sender;
+    }
+
+    public void setSender(List<FriendRequest> sender) {
+        this.sender = sender;
+    }
+
+    public List<FriendRequest> getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(List<FriendRequest> recipient) {
+        this.recipient = recipient;
     }
 }
