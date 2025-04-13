@@ -1,5 +1,6 @@
 package com.mutlu.facebookapp.service;
 
+import com.mutlu.facebookapp.dto.MessageViewDto;
 import com.mutlu.facebookapp.entity.Message;
 import com.mutlu.facebookapp.entity.User;
 import com.mutlu.facebookapp.repository.MessageRepository;
@@ -7,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -26,9 +30,21 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public List<Message> getMessagesBetweenUsers(int userId1, int userId2) {
-        List<Message> messages = messageRepository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId1, userId2);
-        messages.addAll(messageRepository.findByRecipientIdAndSenderIdOrderByTimestampAsc(userId1, userId2));
-        return messages;
+    public List<MessageViewDto> getMessageContentsBetweenUsers(int userId1, int userId2) {
+        List<Message> messages1 = messageRepository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId1, userId2);
+        List<Message> messages2 = messageRepository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId2, userId1);
+
+        List<Message> allMessages = new ArrayList<>();
+        allMessages.addAll(messages1);
+        allMessages.addAll(messages2);
+
+        // Zaman sırasına göre tüm mesajları sırala
+        allMessages.sort(Comparator.comparing(Message::getTimestamp));
+
+        return allMessages.stream()
+                .map(msg -> new MessageViewDto(msg.getSender().getId(),msg.getContent(), msg.getTimestamp()))
+                .collect(Collectors.toList());
     }
+
 }
+

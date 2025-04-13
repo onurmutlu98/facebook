@@ -1,5 +1,6 @@
 package com.mutlu.facebookapp.controller;
 
+import com.mutlu.facebookapp.dto.MessageViewDto;
 import com.mutlu.facebookapp.entity.Message;
 import com.mutlu.facebookapp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class MessageController {
 
 
     @PostMapping("/between")
-    public List<Message> getMessagesBetweenUsers(@RequestBody Map<String, Integer> request) {
+    public List<MessageViewDto> getMessagesBetweenUsers(@RequestBody Map<String, Integer> request) {
         int userId1= (int) request.get("userId1");
         int userId2= (int) request.get("userId2");
-        return messageService.getMessagesBetweenUsers(userId1, userId2);
+        return messageService.getMessageContentsBetweenUsers(userId1, userId2);
     }
 }
