@@ -1,0 +1,64 @@
+package com.mutlu.facebookapp.service;
+
+import com.mutlu.facebookapp.dto.PostDto;
+import com.mutlu.facebookapp.entity.Post;
+import com.mutlu.facebookapp.entity.User;
+import com.mutlu.facebookapp.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class PostService {
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private UserService userService;
+
+    public Post createPost(int userId,String title, String content) {
+        User user = userService.getUserById(userId);
+        Post post = new Post();
+        post.setContent(content);
+        post.setTitle(title);
+        post.setTimestamp(LocalDateTime.now());
+        post.setUser(user);
+        return postRepository.save(post);
+    }
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
+    public List<PostDto> getPostDtosByUserId(int userId) {
+        // Veritabanından gelen tüm postları al
+        List<Post> posts = postRepository.findByUserIdOrderByTimestampDesc(userId);
+
+        // Post objelerinden sadece gerekli bilgileri alarak PostDto oluştur
+        List<PostDto> postDtos = new ArrayList<>();
+        for (Post post : posts) {
+            // Post'tan gerekli verileri al
+            String username = post.getUser().getUsername(); // Kullanıcı adı
+            String content = post.getContent();            // Mesaj içeriği
+            String title= post.getTitle();
+            LocalDateTime timestamp = post.getTimestamp(); // Zaman damgası
+
+            // Yeni PostDto objesi oluştur ve listeye ekle
+            PostDto postDto = new PostDto(username,title, content, timestamp);
+            postDtos.add(postDto);
+        }
+
+        // DTO listesine dönüş yap
+        return postDtos;
+    }
+
+
+    public String deletePost(int postId) {
+        postRepository.deleteById(postId);
+        return "Post deleted successfully";
+    }
+}
