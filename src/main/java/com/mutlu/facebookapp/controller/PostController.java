@@ -14,29 +14,29 @@ import java.util.Map;
 public class PostController {
 
     @Autowired
-    private PostService postService;
+    private PostService service;
 
     @PostMapping("/create")
     public Post createPost(@RequestBody Map<String, String> request) {
         int userId = Integer.parseInt(request.get("userId"));
         String title = request.get("title");
         String content = request.get("content");
-        return postService.createPost(userId,title, content);
+        return service.createPost(userId,title, content);
     }
 
     @GetMapping("/all")
     public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+        return service.getAllPosts();
     }
 
     @GetMapping("/{userId}")
     public List<PostDto> getPostDtosByUser(@PathVariable int userId) {
-        return postService.getPostDtosByUserId(userId);
+        return service.getPostDtosByUserId(userId);
     }
 
 
     @DeleteMapping("/{postId}")
     public String deletePost(@PathVariable int postId) {
-        return postService.deletePost(postId);
+        return service.deletePost(postId);
     }
 }

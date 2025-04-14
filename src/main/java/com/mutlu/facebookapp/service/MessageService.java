@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class MessageService {
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageRepository repository;
 
     @Autowired
     private UserService userService;
@@ -27,12 +27,12 @@ public class MessageService {
         User recipient = userService.getUserById(recipientId);
 
         Message message = new Message(content, LocalDateTime.now(), sender, recipient);
-        return messageRepository.save(message);
+        return repository.save(message);
     }
 
     public List<MessageViewDto> getMessageContentsBetweenUsers(int userId1, int userId2) {
-        List<Message> messages1 = messageRepository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId1, userId2);
-        List<Message> messages2 = messageRepository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId2, userId1);
+        List<Message> messages1 = repository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId1, userId2);
+        List<Message> messages2 = repository.findBySenderIdAndRecipientIdOrderByTimestampAsc(userId2, userId1);
 
         List<Message> allMessages = new ArrayList<>();
         allMessages.addAll(messages1);

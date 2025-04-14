@@ -15,7 +15,7 @@ import java.util.List;
 public class PostService {
 
     @Autowired
-    private PostRepository postRepository;
+    private PostRepository repository;
 
     @Autowired
     private UserService userService;
@@ -27,16 +27,16 @@ public class PostService {
         post.setTitle(title);
         post.setTimestamp(LocalDateTime.now());
         post.setUser(user);
-        return postRepository.save(post);
+        return repository.save(post);
     }
 
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        return repository.findAll();
     }
 
     public List<PostDto> getPostDtosByUserId(int userId) {
         // Veritabanından gelen tüm postları al
-        List<Post> posts = postRepository.findByUserIdOrderByTimestampDesc(userId);
+        List<Post> posts = repository.findByUserIdOrderByTimestampDesc(userId);
 
         // Post objelerinden sadece gerekli bilgileri alarak PostDto oluştur
         List<PostDto> postDtos = new ArrayList<>();
@@ -58,7 +58,11 @@ public class PostService {
 
 
     public String deletePost(int postId) {
-        postRepository.deleteById(postId);
+        repository.deleteById(postId);
         return "Post deleted successfully";
+    }
+
+    public Post getPostById(int postId) {
+        return repository.findById(postId).get();
     }
 }

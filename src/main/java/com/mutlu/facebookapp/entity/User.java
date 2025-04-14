@@ -20,6 +20,7 @@ public class User {
     @JsonIgnore
     private List<FriendRequest> sender;
 
+
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<FriendRequest> recipient;

@@ -14,7 +14,7 @@ import java.util.Map;
 public class MessageController {
 
     @Autowired
-    private MessageService messageService;
+    private MessageService service;
 
     @PostMapping("/send")
     public Message sendMessage(@RequestBody Map<String, Object> request) {
@@ -22,7 +22,7 @@ public class MessageController {
         int receiverId = (int) request.get("receiverId");
         String content = (String) request.get("content");
 
-        return messageService.sendMessage(senderId, receiverId, content);
+        return service.sendMessage(senderId, receiverId, content);
     }
 
 
@@ -30,6 +30,6 @@ public class MessageController {
     public List<MessageViewDto> getMessagesBetweenUsers(@RequestBody Map<String, Integer> request) {
         int userId1= (int) request.get("userId1");
         int userId2= (int) request.get("userId2");
-        return messageService.getMessageContentsBetweenUsers(userId1, userId2);
+        return service.getMessageContentsBetweenUsers(userId1, userId2);
     }
 }
