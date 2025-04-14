@@ -1,5 +1,6 @@
 package com.mutlu.facebookapp.service;
 
+import com.mutlu.facebookapp.dto.LikesDto;
 import com.mutlu.facebookapp.entity.Likes;
 import com.mutlu.facebookapp.entity.Post;
 import com.mutlu.facebookapp.entity.User;
@@ -29,6 +30,17 @@ public class LikesService {
         likes.setTimestamp(LocalDateTime.now());
 
         return repository.save(likes);
+    }
+    public LikesDto countLikesByPostId(int postId) {
+        LikesDto likesDto = new LikesDto();
+        Post post = postService.getPostById(postId);
+        int likeCount= repository.countByPostIdAndStatus(postId, 1);
+        int dislikeCount= repository.countByPostIdAndStatus(postId, 2);
+        likesDto.setLikesNumber(likeCount);
+        likesDto.setDislikesNumber(dislikeCount);
+        likesDto.setPostComment(post.getContent());
+        return likesDto;
+
     }
 
 
